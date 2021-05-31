@@ -2,7 +2,8 @@ name: 'LibGDX Build and Deploy'
 description: 'GitHub action that builds LibGDX executable and deploys'
 
 on:
-  push: main
+  push:
+    branches: main
 
 jobs:
   windows:
