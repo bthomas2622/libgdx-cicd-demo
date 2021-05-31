@@ -6,7 +6,10 @@ jobs:
   windows:
     name: windows build and deploy
     runs-on: [self-hosted, windows]
-    working-directory: ./temp
+    defaults:
+      run:
+        shell: bash
+        working-directory: temp
     steps:
       - name: Setup Java
         uses: actions/setup-java@v2
@@ -15,7 +18,6 @@ jobs:
           java-version: '16'
       - name: Build
         run: gradlew jpackageImage
-        shell: bash
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
@@ -30,7 +32,10 @@ jobs:
   linux:
     name: linux build and deploy
     runs-on: [self-hosted, linux]
-    working-directory: ./temp
+    defaults:
+      run:
+        shell: bash
+        working-directory: temp
     steps:
       - name: Setup Java
         uses: actions/setup-java@v2
@@ -39,7 +44,6 @@ jobs:
           java-version: '16'
       - name: Build
         run: gradlew jpackageImage
-        shell: bash
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
@@ -54,7 +58,10 @@ jobs:
   mac:
     name: mac build and deploy
     runs-on: [self-hosted, mac]
-    working-directory: ./temp
+    defaults:
+      run:
+        shell: bash
+        working-directory: temp
     steps:
       - name: Setup Java
         uses: actions/setup-java@v2
@@ -63,7 +70,6 @@ jobs:
           java-version: '16'
       - name: Build
         run: gradlew jpackageImage
-        shell: bash
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
