@@ -6,6 +6,7 @@ jobs:
   windows:
     name: windows build and deploy
     runs-on: [self-hosted, windows]
+    working-directory: ./temp
     steps:
       - name: Setup Java
         uses: actions/setup-java@v2
@@ -23,9 +24,13 @@ jobs:
           ITCH_GAME: ${{ secrets.GAME_NAME }}
           ITCH_USER: freebrunch
           PACKAGE: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
+      - name: Clean temp directory
+        run: rm -rf *
+        working-directory: ./temp
   linux:
     name: linux build and deploy
     runs-on: [self-hosted, linux]
+    working-directory: ./temp
     steps:
       - name: Setup Java
         uses: actions/setup-java@v2
@@ -43,9 +48,13 @@ jobs:
           ITCH_GAME: ${{ secrets.GAME_NAME }}
           ITCH_USER: freebrunch
           PACKAGE: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
+      - name: Clean temp directory
+        run: rm -rf *
+        working-directory: ./temp
   mac:
     name: mac build and deploy
     runs-on: [self-hosted, mac]
+    working-directory: ./temp
     steps:
       - name: Setup Java
         uses: actions/setup-java@v2
@@ -63,3 +72,6 @@ jobs:
           ITCH_GAME: ${{ secrets.GAME_NAME }}
           ITCH_USER: freebrunch
           PACKAGE: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
+      - name: Clean temp directory
+        run: rm -rf *
+        working-directory: ./temp
