@@ -26,7 +26,7 @@ jobs:
         with:
           arguments: jpackageImage
       - name: Download Butler
-        run: curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+        run: curl -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
       - name: Extract butler
         run: Expand-Archive -DestinationPath . butler.zip
       - name: Itch.io Push
