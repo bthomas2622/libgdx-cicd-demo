@@ -1,4 +1,6 @@
 name: 'LibGDX Build and Deploy'
+env:
+  BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
 on:
   push:
     branches: main
@@ -23,14 +25,12 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: jpackageImage
+      - name: Download Butler
+        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile butler.zip
+      - name: Extract butler
+        run: Expand-Archive -DestinationPath . butler.zip
       - name: Itch.io Push
-        uses: robpc/itchio-upload-action@v1
-        with:
-          api-key: ${{ secrets.BUTLER_CREDENTIALS }}
-          channel: windows
-          project: ${{ secrets.GAME_NAME }}
-          ITCH_USER: freebrunch
-          path: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
+        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
       - name: Clean temp directory
         run: rm -rf *
         working-directory: ./temp
@@ -52,14 +52,12 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: jpackageImage
+      - name: Download butler
+        run: wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O butler.zip
+      - name: Unzip buttler
+        run: unzip butler.zip
       - name: Itch.io Push
-        uses: josephbmanley/butler-publish-itchio-action@master
-        with:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: linux
-          ITCH_GAME: ${{ secrets.GAME_NAME }}
-          ITCH_USER: freebrunch
-          PACKAGE: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
+        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:linux
       - name: Clean temp directory
         run: rm -rf *
         working-directory: ./temp
@@ -81,14 +79,12 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: jpackageImage
+      - name: Download butler
+        run: wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O butler.zip
+      - name: Unzip buttler
+        run: unzip butler.zip
       - name: Itch.io Push
-        uses: josephbmanley/butler-publish-itchio-action@master
-        with:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: osx
-          ITCH_GAME: ${{ secrets.GAME_NAME }}
-          ITCH_USER: freebrunch
-          PACKAGE: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
+        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:osx
       - name: Clean temp directory
         run: rm -rf *
         working-directory: ./temp
