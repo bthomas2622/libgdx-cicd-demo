@@ -10,14 +10,17 @@ jobs:
       run:
         working-directory: temp
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '16'
       - name: Build
-        run: gradlew jpackageImage
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: jpackageImage
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
@@ -36,14 +39,17 @@ jobs:
       run:
         working-directory: temp
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '16'
       - name: Build
-        run: gradlew jpackageImage
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: jpackageImage
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
@@ -62,14 +68,17 @@ jobs:
       run:
         working-directory: temp
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '16'
       - name: Build
-        run: gradlew jpackageImage
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: jpackageImage
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
