@@ -35,4 +35,4 @@ jobs:
       - name: Itch.io Push
         run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
       - name: Clean directory
-        run: rm -rf *
+        run: Remove-Item *
