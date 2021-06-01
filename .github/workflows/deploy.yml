@@ -1,12 +1,15 @@
 name: 'LibGDX Build and Deploy'
+
 on:
   push:
     branches: main
+
 env:
   BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+
 jobs:
   windows:
-    name: windows build and deploy
+    name: Windows Build and Deploy
     runs-on: [self-hosted, windows]
     defaults:
       run:
@@ -27,8 +30,8 @@ jobs:
         with:
           arguments: jpackageImage
       - name: Download Butler
-        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile butler.zip
-      - name: Extract butler
+        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile . butler.zip
+      - name: Extract Butler
         run: Expand-Archive -DestinationPath . butler.zip
       - name: Itch.io Push
         run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
