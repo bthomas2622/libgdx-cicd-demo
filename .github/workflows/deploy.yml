@@ -26,7 +26,7 @@ jobs:
         with:
           arguments: jpackageImage
       - name: Download Butler
-        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile butler.zip
+        run: curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
       - name: Extract butler
         run: Expand-Archive -DestinationPath . butler.zip
       - name: Itch.io Push
@@ -58,33 +58,6 @@ jobs:
         run: unzip butler.zip
       - name: Itch.io Push
         run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:linux
-      - name: Clean temp directory
-        run: rm -rf *
-        working-directory: ./temp
-  mac:
-    name: mac build and deploy
-    runs-on: [self-hosted, mac]
-    defaults:
-      run:
-        working-directory: temp
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '16'
-      - name: Build
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: jpackageImage
-      - name: Download butler
-        run: wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O butler.zip
-      - name: Unzip buttler
-        run: unzip butler.zip
-      - name: Itch.io Push
-        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:osx
       - name: Clean temp directory
         run: rm -rf *
         working-directory: ./temp
