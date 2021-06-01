@@ -34,6 +34,6 @@ jobs:
         run: Expand-Archive -DestinationPath . butler.zip
       - name: Itch.io Push
         run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
-      - name: Clean directory
+      - name: Clean Directory
         if: always()
         run: remove-item * -Force -Recurse
