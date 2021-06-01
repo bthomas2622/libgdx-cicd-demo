@@ -10,7 +10,7 @@ jobs:
     runs-on: [self-hosted, windows]
     defaults:
       run:
-        working-directory: temp
+        working-directory: ./temp
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.2
@@ -33,31 +33,3 @@ jobs:
         run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
       - name: Clean temp directory
         run: rm -rf *
-        working-directory: ./temp
-  linux:
-    name: linux build and deploy
-    runs-on: [self-hosted, linux]
-    defaults:
-      run:
-        working-directory: temp
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.2
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '16'
-      - name: Build
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: jpackageImage
-      - name: Download butler
-        run: wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O butler.zip
-      - name: Unzip buttler
-        run: unzip butler.zip
-      - name: Itch.io Push
-        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:linux
-      - name: Clean temp directory
-        run: rm -rf *
-        working-directory: ./temp
