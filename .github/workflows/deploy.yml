@@ -11,6 +11,7 @@ jobs:
     defaults:
       run:
         working-directory: temp
+        shell: powershell
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.2
@@ -26,9 +27,9 @@ jobs:
         with:
           arguments: jpackageImage
       - name: Download Butler
-        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile ./temp/butler.zip
+        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile butler.zip
       - name: Extract butler
-        run: Expand-Archive -DestinationPath . ./temp/butler.zip
+        run: Expand-Archive -DestinationPath . butler.zip
       - name: Itch.io Push
         run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
       - name: Clean temp directory
