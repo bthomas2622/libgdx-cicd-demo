@@ -8,7 +8,6 @@ jobs:
     runs-on: [self-hosted, windows]
     defaults:
       run:
-        shell: bash
         working-directory: temp
     steps:
       - name: Setup Java
@@ -17,7 +16,7 @@ jobs:
           distribution: 'adopt'
           java-version: '16'
       - name: Build
-        run: gradlew jpackageImage
+        run: ./gradlew jpackageImage
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
@@ -34,7 +33,6 @@ jobs:
     runs-on: [self-hosted, linux]
     defaults:
       run:
-        shell: bash
         working-directory: temp
     steps:
       - name: Setup Java
@@ -43,7 +41,7 @@ jobs:
           distribution: 'adopt'
           java-version: '16'
       - name: Build
-        run: gradlew jpackageImage
+        run: ./gradlew jpackageImage
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
@@ -60,7 +58,6 @@ jobs:
     runs-on: [self-hosted, mac]
     defaults:
       run:
-        shell: bash
         working-directory: temp
     steps:
       - name: Setup Java
@@ -69,7 +66,7 @@ jobs:
           distribution: 'adopt'
           java-version: '16'
       - name: Build
-        run: gradlew jpackageImage
+        run: ./gradlew jpackageImage
       - name: Itch.io Push
         uses: josephbmanley/butler-publish-itchio-action@master
         with:
