@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          lfs: true
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
@@ -22,13 +24,13 @@ jobs:
         with:
           arguments: jpackageImage
       - name: Itch.io Push
-        uses: josephbmanley/butler-publish-itchio-action@master
+        uses: robpc/itchio-upload-action@v1
         with:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: windows
-          ITCH_GAME: ${{ secrets.GAME_NAME }}
+          api-key: ${{ secrets.BUTLER_CREDENTIALS }}
+          channel: windows
+          project: ${{ secrets.GAME_NAME }}
           ITCH_USER: freebrunch
-          PACKAGE: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
+          path: ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }}
       - name: Clean temp directory
         run: rm -rf *
         working-directory: ./temp
