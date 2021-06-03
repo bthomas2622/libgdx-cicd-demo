@@ -8,54 +8,54 @@ env:
   BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
 
 jobs:
-  windows:
-    runs-on: windows-latest
-    name: Windows Build and Deploy
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.2
-        with:
-          lfs: true
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '16'
-      - name: Build
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: jpackageImage
-      - name: Download Butler
-        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile butler.zip
-      - name: Extract Butler
-        run: Expand-Archive -DestinationPath . butler.zip
-      - name: Itch.io Push
-        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
-  linux:
-    runs-on: ubuntu-latest
-    name: Linux Build and Deploy
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.2
-        with:
-          lfs: true
-      - name: Download Butler
-        run: wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O butler.zip
-      - name: Unzip Butler
-        run: unzip butler.zip
-      - name: Fix permissions
-        run: chmod +x butler && chmod +x gradlew
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '16'
-      - name: Build
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: jpackageImage
-      - name: Itch.io Push
-        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:linux
+#  windows:
+#    runs-on: windows-latest
+#    name: Windows Build and Deploy
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2.3.2
+#        with:
+#          lfs: true
+#      - name: Setup Java
+#        uses: actions/setup-java@v2
+#        with:
+#          distribution: 'adopt'
+#          java-version: '16'
+#      - name: Build
+#        uses: eskatos/gradle-command-action@v1
+#        with:
+#          arguments: jpackageImage
+#      - name: Download Butler
+#        run: Invoke-WebRequest -Uri https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default -OutFile butler.zip
+#      - name: Extract Butler
+#        run: Expand-Archive -DestinationPath . butler.zip
+#      - name: Itch.io Push
+#        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:windows
+#  linux:
+#    runs-on: ubuntu-latest
+#    name: Linux Build and Deploy
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2.3.2
+#        with:
+#          lfs: true
+#      - name: Download Butler
+#        run: wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O butler.zip
+#      - name: Unzip Butler
+#        run: unzip butler.zip
+#      - name: Fix permissions
+#        run: chmod +x butler && chmod +x gradlew
+#      - name: Setup Java
+#        uses: actions/setup-java@v2
+#        with:
+#          distribution: 'adopt'
+#          java-version: '16'
+#      - name: Build
+#        uses: eskatos/gradle-command-action@v1
+#        with:
+#          arguments: jpackageImage
+#      - name: Itch.io Push
+#        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:linux
   mac:
     runs-on: macos-latest
     name: Mac Build and Deploy
@@ -80,4 +80,4 @@ jobs:
         with:
           arguments: jpackageImage
       - name: Itch.io Push
-        run: ./butler push ./lwjgl3/build/jpackage/${{ secrets.GAME_NAME }} freebrunch/${{ secrets.GAME_NAME }}:mac
+        run: ./butler push ./lwjgl3/build/jpackage freebrunch/${{ secrets.GAME_NAME }}:mac

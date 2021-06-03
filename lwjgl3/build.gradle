@@ -29,23 +29,23 @@ run {
 }
 
 jar {
-// sets the name of the .jar file this produces to the name of the game or app.
+	// sets the name of the .jar file this produces to the name of the game or app.
 	archiveBaseName.set(appName)
-// the duplicatesStrategy will matter starting in Gradle 7.0; this setting works.
+	// the duplicatesStrategy will matter starting in Gradle 7.0; this setting works.
 	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 	dependsOn configurations.runtimeClasspath
 	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-// these "exclude" lines remove some unnecessary duplicate files in the output JAR.
+	// these "exclude" lines remove some unnecessary duplicate files in the output JAR.
 	exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
 	dependencies {
 		exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
 	}
-// setting the manifest makes the JAR runnable.
+	// setting the manifest makes the JAR runnable.
 	manifest {
 		attributes 'Main-Class': project.mainClassName
 	}
 	destinationDirectory = file("$buildDir/lib")
-// this last step may help on some OSes that need extra instruction to make runnable JARs.
+	// this last step may help on some OSes that need extra instruction to make runnable JARs.
 	doLast {
 		file(archiveFile).setExecutable(true, false)
 	}
@@ -69,11 +69,11 @@ runtime {
 		//jpackageHome = '/usr/lib/jvm/open-jdk'
 		mainJar = jar.archiveFileName.get()
 		if (osName.contains('windows')) {
-			imageOptions = ["--icon", file("../icons/icon.ico"), "--name", appName]
+			imageOptions = ["--icon", file("../icons/icon.ico"), "--name", appName] as List<String>
 		} else if (osName.contains('linux')) {
-			imageOptions = ["--icon", file("../icons/icon.png"), "--name", appName]
+			imageOptions = ["--icon", file("../icons/icon.png"), "--name", appName] as List<String>
 		} else if (osName.contains('mac')) {
-			imageOptions = ["--icon", file("../icons/icon.icns"), "--name", appName]
+			imageOptions = ["--icon", file("../icons/icon.icns"), "--name", appName] as List<String>
 		}
 	}
 }
