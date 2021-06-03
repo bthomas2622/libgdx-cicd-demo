@@ -1,8 +1,6 @@
 name: 'LibGDX Build and Deploy'
 
-on:
-  push:
-    branches: main
+on: workflow_dispatch
 
 env:
   BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
