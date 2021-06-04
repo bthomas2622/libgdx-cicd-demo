@@ -1,19 +1,20 @@
-package io.itch.freebrunch;
+package io.itch.freebrunch.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.itch.freebrunch.MyGdxGame;
 
 public class MainMenuScreen implements Screen {
     final MyGdxGame game;
     OrthographicCamera camera;
 
     public MainMenuScreen(final MyGdxGame gam) {
-        game = gam;
+        this.game = gam;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, game.appPreferences.getViewportWidth(), game.appPreferences.getViewportHeight());
     }
 
     @Override
