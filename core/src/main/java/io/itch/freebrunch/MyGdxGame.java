@@ -15,6 +15,8 @@ public class MyGdxGame extends Game {
     MainMenuScreen mainMenuScreen;
     GameScreen gameScreen;
     public AppPreferences appPreferences;
+    public int ScreenWidth;
+    public int ScreenHeight;
 
     @Override
     public void create() {
@@ -23,7 +25,7 @@ public class MyGdxGame extends Game {
         font = new BitmapFont();
         appPreferences = new AppPreferences();
         mainMenuScreen = new MainMenuScreen(this);
-        Gdx.graphics.setWindowedMode(appPreferences.getViewportWidth(), appPreferences.getViewportHeight());
+        Gdx.graphics.setWindowedMode(appPreferences.getResolutionWidth(), appPreferences.getResolutionHeight());
         this.setScreen(mainMenuScreen);
     }
 
@@ -42,6 +44,6 @@ public class MyGdxGame extends Game {
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
+        // batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
     }
 }

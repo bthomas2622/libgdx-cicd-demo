@@ -9,8 +9,8 @@ public class AppPreferences {
     private static final String PREF_SOUND_ENABLED = "sound.enabled";
     private static final String PREF_SOUND_VOL = "sound";
     private static final String PREFS_NAME = "simple-game";
-    private static final String PREF_VIEWPORT_WIDTH = "width";
-    private static final String PREF_VIEWPORT_HEIGHT = "height";
+    private static final String PREF_RESOLUTION_WIDTH = "width";
+    private static final String PREF_RESOLUTION_HEIGHT = "height";
 
     protected Preferences getPrefs() {
         return Gdx.app.getPreferences(PREFS_NAME);
@@ -52,21 +52,21 @@ public class AppPreferences {
         getPrefs().flush();
     }
 
-    public int getViewportWidth() {
-        return getPrefs().getInteger(PREF_VIEWPORT_WIDTH, 1920);
+    public int getResolutionWidth() {
+        return getPrefs().getInteger(PREF_RESOLUTION_WIDTH, 1920);
     }
 
-    public void setViewportWidth(int width) {
-        getPrefs().putInteger(PREF_VIEWPORT_WIDTH, width);
+    public void setResolutionWidth(int width) {
+        getPrefs().putInteger(PREF_RESOLUTION_WIDTH, width);
         getPrefs().flush();
     }
 
-    public int getViewportHeight() {
-        return getPrefs().getInteger(PREF_VIEWPORT_WIDTH, 1080);
+    public int getResolutionHeight() {
+        return getPrefs().getInteger(PREF_RESOLUTION_WIDTH, 1080);
     }
 
-    public void setViewportHeight(int height) {
-        getPrefs().putInteger(PREF_VIEWPORT_HEIGHT, height);
+    public void setResolutionHeight(int height) {
+        getPrefs().putInteger(PREF_RESOLUTION_HEIGHT, height);
         getPrefs().flush();
     }
 }
