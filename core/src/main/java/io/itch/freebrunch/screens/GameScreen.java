@@ -15,45 +15,36 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.itch.freebrunch.MyGdxGame;
+import io.itch.freebrunch.objects.Bucket;
+import io.itch.freebrunch.utils.Constants;
 
 public class GameScreen implements Screen {
 
     final MyGdxGame game;
 
+
     Texture dropImage;
-    Texture bucketImage;
     Sound dropSound;
     Music rainMusic;
-    OrthographicCamera camera;
-    Rectangle bucket;
     Array<Rectangle> raindrops;
     long lastDropTime;
     int dropsGathered;
+    private Bucket bucket;
 
     public GameScreen(final MyGdxGame gam) {
         this.game = gam;
 
         // load the images for the droplet and the bucket, 64x64 pixels each
         dropImage = new Texture(Gdx.files.internal("drop.png"));
-        bucketImage = new Texture(Gdx.files.internal("bucket.png"));
 
         // load the drop sound effect and the rain background "music"
         dropSound = Gdx.audio.newSound(Gdx.files.internal("Gulp.mp3"));
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("Boba_Theme.mp3"));
         rainMusic.setLooping(true);
 
-        // create the camera and the SpriteBatch
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
-
-        // create a Rectangle to logically represent the bucket
-        bucket = new Rectangle();
-        bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
-        bucket.y = 20; // bottom left corner of the bucket is 20 pixels above
-        // the bottom screen edge
-        bucket.width = 64;
-        bucket.height = 64;
+        bucket = new Bucket(Constants.WORLD_WIDTH / 2);
 
         // create the raindrops array and spawn the first raindrop
         raindrops = new Array<Rectangle>();
@@ -73,24 +64,20 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        game.camera.update();
+        game.batch.setProjectionMatrix(game.camera.combined);
+        game.batch.begin();
         // clear the screen with a dark blue color. The
         // arguments to clear are the red, green
         // blue and alpha component in the range [0,1]
         // of the color to be used to clear the screen.
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
-        // tell the camera to update its matrices.
-        camera.update();
-
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
-        game.batch.setProjectionMatrix(camera.combined);
 
         // begin a new batch and draw the bucket and
         // all drops
-        game.batch.begin();
         game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
-        game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
+        bucket.draw(game.batch);
         for (Rectangle raindrop : raindrops) {
             game.batch.draw(dropImage, raindrop.x, raindrop.y);
         }
@@ -100,19 +87,13 @@ public class GameScreen implements Screen {
         if (Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            bucket.x = touchPos.x - 64 / 2;
+            game.camera.unproject(touchPos);
+            bucket.updatePosition(touchPos.x);
         }
         if (Gdx.input.isKeyPressed(Keys.LEFT))
-            bucket.x -= 200 * Gdx.graphics.getDeltaTime();
+            bucket.translate(true, Gdx.graphics.getDeltaTime());
         if (Gdx.input.isKeyPressed(Keys.RIGHT))
-            bucket.x += 200 * Gdx.graphics.getDeltaTime();
-
-        // make sure the bucket stays within the screen bounds
-        if (bucket.x < 0)
-            bucket.x = 0;
-        if (bucket.x > 800 - 64)
-            bucket.x = 800 - 64;
+            bucket.translate(false, Gdx.graphics.getDeltaTime());
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
@@ -127,7 +108,7 @@ public class GameScreen implements Screen {
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
             if (raindrop.y + 64 < 0)
                 iter.remove();
-            if (raindrop.overlaps(bucket)) {
+            if (raindrop.overlaps(bucket.getBoundingBox())) {
                 dropsGathered++;
                 dropSound.play();
                 iter.remove();
@@ -137,6 +118,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        game.resize(width, height);
     }
 
     @Override
@@ -161,7 +143,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         dropImage.dispose();
-        bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
     }

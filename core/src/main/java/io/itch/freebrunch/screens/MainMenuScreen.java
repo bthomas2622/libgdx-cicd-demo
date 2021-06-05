@@ -8,25 +8,21 @@ import io.itch.freebrunch.MyGdxGame;
 
 public class MainMenuScreen implements Screen {
     final MyGdxGame game;
-    OrthographicCamera camera;
 
     public MainMenuScreen(final MyGdxGame gam) {
         this.game = gam;
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.appPreferences.getResolutionWidth(), game.appPreferences.getResolutionHeight());
     }
 
     @Override
     public void render(float delta) {
+        game.camera.update();
+        game.batch.setProjectionMatrix(game.camera.combined);
+        game.batch.begin();
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
-
-        game.batch.begin();
         game.font.draw(game.batch, "Welcome to MyGdxGame!!! 3", 100, 150);
         game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
@@ -37,6 +33,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        game.resize(width, height);
     }
 
     @Override
