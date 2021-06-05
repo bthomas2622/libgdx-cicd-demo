@@ -2,31 +2,42 @@ package io.itch.freebrunch.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.itch.freebrunch.MyGdxGame;
+import io.itch.freebrunch.utils.Constants;
+import io.itch.freebrunch.utils.Util;
 
 public class MainMenuScreen implements Screen {
     final MyGdxGame game;
-    OrthographicCamera camera;
+    FreeTypeFontGenerator generator;
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    BitmapFont font;
 
     public MainMenuScreen(final MyGdxGame gam) {
         this.game = gam;
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.appPreferences.getResolutionWidth(), game.appPreferences.getResolutionHeight());
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/NotoSans-Bold.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 50;
+        parameter.borderWidth = 5;
+        parameter.borderColor = Color.BLACK;
+        parameter.color = Color.WHITE;
+        font = generator.generateFont(parameter); // font size 12 pixels
     }
 
     @Override
     public void render(float delta) {
+        game.camera.update();
+        game.batch.setProjectionMatrix(game.camera.combined);
+        game.batch.begin();
+
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        font.draw(game.batch, "Welcome to MyGdxGame!!!", Constants.WORLD_WIDTH / 2f - Util.getHalfFontWidth(font, "Welcome to MyGdxGame!!!"), Constants.WORLD_HEIGHT / 2f);
+        font.draw(game.batch, "Tap anywhere to begin!", Constants.WORLD_WIDTH / 2f - Util.getHalfFontWidth(font, "Tap anywhere to begin!"), Constants.WORLD_HEIGHT / 4f);
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Welcome to MyGdxGame!!! 3", 100, 150);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
@@ -37,6 +48,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        game.resize(width, height);
     }
 
     @Override
@@ -57,6 +69,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        generator.dispose();
+        font.dispose();
     }
 
 }
