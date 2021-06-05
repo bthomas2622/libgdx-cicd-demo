@@ -7,13 +7,12 @@ import com.badlogic.gdx.math.Rectangle;
 import io.itch.freebrunch.utils.Constants;
 
 public class Bucket {
-    private int height;
-    private int width;
+    private final int height;
+    private final int width;
     private float x;
     private final float y = Constants.WORLD_HEIGHT / 10f;
     private final Rectangle boundingBox;
     private final Texture bucketImage;
-    private final int movementSpeed = 200;
 
     public Bucket(float xCentre) {
         this.bucketImage = new Texture(Gdx.files.internal("bucket.png"));;
@@ -29,6 +28,7 @@ public class Bucket {
     }
 
     public void translate(boolean left, float deltaTime) {
+        int movementSpeed = 200;
         if (left) {
             x -= movementSpeed * deltaTime;
         }
@@ -51,4 +51,8 @@ public class Bucket {
     }
 
     public Rectangle getBoundingBox() { return boundingBox; }
+
+    public void dispose() {
+        bucketImage.dispose();
+    }
 }

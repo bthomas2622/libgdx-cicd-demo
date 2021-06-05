@@ -2,7 +2,6 @@ package io.itch.freebrunch;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,18 +17,13 @@ public class MyGdxGame extends Game {
     private FitViewport viewport;
 
     public SpriteBatch batch;
-    public BitmapFont font;
     MainMenuScreen mainMenuScreen;
     GameScreen gameScreen;
     public AppPreferences appPreferences;
-    public int ScreenWidth;
-    public int ScreenHeight;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        // Use LibGDX's default Arial font.
-        font = new BitmapFont();
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
@@ -48,10 +42,7 @@ public class MyGdxGame extends Game {
 
     @Override
     public void dispose() {
-        mainMenuScreen.dispose();
-        if (gameScreen != null) gameScreen.dispose();
         batch.dispose();
-        font.dispose();
     }
 
     @Override
