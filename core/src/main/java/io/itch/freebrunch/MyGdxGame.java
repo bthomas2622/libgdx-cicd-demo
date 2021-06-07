@@ -3,10 +3,8 @@ package io.itch.freebrunch;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import io.itch.freebrunch.screens.GameScreen;
 import io.itch.freebrunch.screens.MainMenuScreen;
 import io.itch.freebrunch.utils.AppPreferences;
 import io.itch.freebrunch.utils.Constants;
@@ -18,8 +16,8 @@ public class MyGdxGame extends Game {
 
     public SpriteBatch batch;
     MainMenuScreen mainMenuScreen;
-    GameScreen gameScreen;
     public AppPreferences appPreferences;
+    public AssetMgr assetMgr;
 
     @Override
     public void create() {
@@ -29,6 +27,7 @@ public class MyGdxGame extends Game {
         camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
         appPreferences = new AppPreferences();
+        assetMgr = new AssetMgr();
         mainMenuScreen = new MainMenuScreen(this);
         Gdx.graphics.setWindowedMode(appPreferences.getResolutionWidth(), appPreferences.getResolutionHeight());
         this.setScreen(mainMenuScreen);
@@ -43,6 +42,7 @@ public class MyGdxGame extends Game {
     @Override
     public void dispose() {
         batch.dispose();
+        assetMgr.getManager().dispose();
     }
 
     @Override

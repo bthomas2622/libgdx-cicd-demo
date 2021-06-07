@@ -29,6 +29,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        game.assetMgr.getManager().update();
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         game.batch.begin();
@@ -41,6 +42,7 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
+            game.assetMgr.getManager().finishLoading();
             game.setScreen(new GameScreen(game));
             dispose();
         }
