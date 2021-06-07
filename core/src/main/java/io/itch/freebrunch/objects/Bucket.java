@@ -14,8 +14,8 @@ public class Bucket {
     private final Rectangle boundingBox;
     private final Texture bucketImage;
 
-    public Bucket(float xCentre) {
-        this.bucketImage = new Texture(Gdx.files.internal("bucket.png"));;
+    public Bucket(float xCentre, Texture bucketImageTexture) {
+        this.bucketImage = bucketImageTexture;
         this.height = bucketImage.getHeight();
         this.width = bucketImage.getWidth();
         this.x = xCentre - width / 2f;
@@ -53,6 +53,5 @@ public class Bucket {
     public Rectangle getBoundingBox() { return boundingBox; }
 
     public void dispose() {
-        bucketImage.dispose();
     }
 }

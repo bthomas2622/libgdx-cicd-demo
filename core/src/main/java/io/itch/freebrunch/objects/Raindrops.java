@@ -18,12 +18,12 @@ public class Raindrops {
     private final float dropWidth;
     Sound dropSound;
 
-    public Raindrops() {
-        raindrops = new Array<Rectangle>();
-        dropImage = new Texture(Gdx.files.internal("drop.png"));
+    public Raindrops(Texture dropImageTexture, Sound dropSoundSound) {
+        raindrops = new Array<>();
+        dropImage = dropImageTexture;
         dropWidth = dropImage.getWidth();
         dropHeight = dropImage.getHeight();
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("Gulp.mp3"));
+        dropSound = dropSoundSound;
     }
 
     public void spawnRaindrop() {
@@ -64,7 +64,5 @@ public class Raindrops {
     }
 
     public void dispose() {
-        dropImage.dispose();
-        dropSound.dispose();
     }
 }

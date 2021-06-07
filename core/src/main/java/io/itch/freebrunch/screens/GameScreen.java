@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector3;
@@ -22,30 +24,21 @@ public class GameScreen implements Screen {
     Music rainMusic;
     long lastDropTime;
     int dropsGathered;
-    private Bucket bucket;
-    private Raindrops raindrops;
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    private BitmapFont font;
-
+    private final Bucket bucket;
+    private final Raindrops raindrops;
+    private final BitmapFont font;
 
     public GameScreen(final MyGdxGame gam) {
         this.game = gam;
 
         // load the drop sound effect and the rain background "music"
-        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("Boba_Theme.mp3"));
+        rainMusic = game.assetMgr.getManager().get(Constants.GAME_MUSIC, Music.class);
         rainMusic.setLooping(true);
 
-        bucket = new Bucket(Constants.WORLD_WIDTH / 2);
-        raindrops = new Raindrops();
+        bucket = new Bucket(Constants.WORLD_WIDTH / 2f, game.assetMgr.getManager().get(Constants.BUCKET_TEXTURE, Texture.class));
+        raindrops = new Raindrops(game.assetMgr.getManager().get(Constants.DROP_TEXTURE, Texture.class), game.assetMgr.getManager().get(Constants.DROP_SOUND, Sound.class));
+        font = game.assetMgr.getManager().get(Constants.GAME_FONT, BitmapFont.class);
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/NotoSans-Bold.ttf"));
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 50;
-        parameter.borderWidth = 5;
-        parameter.borderColor = Color.BLACK;
-        parameter.color = Color.WHITE;
-        font = generator.generateFont(parameter); // font size 12 pixels
         spawnRaindrop();
     }
 
@@ -120,11 +113,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        rainMusic.dispose();
-        bucket.dispose();
-        raindrops.dispose();
-        generator.dispose();
-        font.dispose();
     }
 
 }
